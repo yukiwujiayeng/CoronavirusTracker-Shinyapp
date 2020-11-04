@@ -7,6 +7,9 @@ library(shinydashboard)
 library(maps)
 library(lubridate)
 library(plotly)
+library(ggplot2)
+library(tidyverse)
+library(datasets)
 
 URL <-"https://opendata.ecdc.europa.eu/covid19/casedistribution/json"
 
@@ -37,4 +40,5 @@ df$Country<- as.character(df$Country)
 
 # convert to Date
 df$Date <- as_date(df$Date, format= "%d/%m/%Y" ) # convert to Date
+
 
