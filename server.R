@@ -1,19 +1,12 @@
 function(input, output) {
-  
-  output$ex1 <- DT::renderDataTable(
-    DT::datatable(df, options = list(pageLength = 15))
-  )
-  
+  #Outbreak Comparison
   selectedData <- reactive({
     df %>%
       filter(Country %in% input$Country,
         Date == input$date
         )
     })
-   
-  trialdata<-reactive({
-    
-  })
+  
   
   output$plot <- reactivePlot(
     
@@ -39,6 +32,30 @@ function(input, output) {
     print(p)
 
     })
+  #for datatable
+  #filter dataset for chosen country
+  selectedData2 <- reactive({
+    df %>%
+      filter(Country %in% input$Country_data) %>%
+      filter(Date >= input$Date_datatable[1] & Date <= input$Date_datatable[2])%>%
+      select(,-"Cumulative_number_for_14_days_of_COVID19_cases_per_100000")
+  })
+  
+  
+  output$ex1 <- DT::renderDataTable(
+    
+    DT::datatable(selectedData2() , options = list(pageLength = 15))
+  )
+  
+  # Downloadable csv of selected dataset ----
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste("Covid-19_data", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(selectedData2(), file, row.names = FALSE)
+    }
+  )
   
   }
  

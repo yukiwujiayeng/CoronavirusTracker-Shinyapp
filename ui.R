@@ -1,7 +1,7 @@
 navbarPage("World Coronavirus Tracker",
            tabPanel("Outbreak comparisons",fluidPage(theme = shinytheme("flatly")),
-                    tags$head(
-                      tags$style(HTML(".shiny-output-error-validation{color: red;}"))),
+                    #tags$head(
+                     # tags$style(HTML(".shiny-output-error-validation{color: red;}"))),
                     pageWithSidebar(
                       headerPanel('Outbreak comparisons'),
                       sidebarPanel(width = 4,
@@ -9,7 +9,7 @@ navbarPage("World Coronavirus Tracker",
                                                label = "Country",
                                                multiple = TRUE, 
                                                choices  = unique(df$Country),
-                                               selected = c("United_Kingdom","United_States_of_America")
+                                               selected = c("United_States_of_America","India","United_Kingdom","France")
                                                ),
                                    selectInput(
                                      "type", 
@@ -27,11 +27,27 @@ navbarPage("World Coronavirus Tracker",
                     )
            ),
            tabPanel(
-             title = " Data",
+             title = " Data",fluidPage(theme = shinytheme("flatly")),
+             pageWithSidebar(
+               headerPanel('Apply Filters'),
+               sidebarPanel(width = 4,
+                            selectInput("Country_data", 
+                                        label = "Country",
+                                        multiple = TRUE, 
+                                        choices  = unique(df$Country),
+                                        selected = c("United_Kingdom","United_States_of_America","France" ,"Italy" )
+                            ),
+                            dateRangeInput(
+                              "Date_datatable", 
+                              label    = "Date", 
+                              start    = "2020-01-01"
+                            ),   
+                            downloadButton("downloadData", "Download")
+                          ),
                     
-             mainPanel(DT::dataTableOutput('ex1'),
-                       downloadButton('download_trend', 'Download data', class = "down"))
+             mainPanel(DT::dataTableOutput('ex1'))
              )
+           )
            
            
        
