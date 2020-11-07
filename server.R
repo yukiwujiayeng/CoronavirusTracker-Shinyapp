@@ -12,7 +12,7 @@ function(input, output) {
     
     function() {
       # check for the input variable
-      if (input$type == "confirmed") {
+      if (input$type == "Confirmed") {
         
         newData <- data.frame(Country = selectedData()$Country,
                               Date = selectedData()$Date,
@@ -28,7 +28,8 @@ function(input, output) {
     p <-ggplot(newData, aes(x=Country,y=type,fill=Country)) + 
       geom_bar(stat = "identity") +
       coord_flip() + scale_y_continuous(name="Cases") +
-      scale_x_discrete(name="Country")
+      scale_x_discrete(name="Country")+
+      labs(title=paste("Number of",input$type,"case on",input$date))
     print(p)
 
     })
