@@ -1,4 +1,4 @@
-function(input, output) {
+function(input, output, session) {
   #Outbreak Comparison
   selectedData <- reactive({
     df %>%
@@ -33,13 +33,14 @@ function(input, output) {
     print(p)
 
     })
-  #for datatable
+  
+  #datatable Page
   #filter dataset for chosen country
   selectedData2 <- reactive({
     df %>%
       filter(Country %in% input$Country_data) %>%
       filter(Date >= input$Date_datatable[1] & Date <= input$Date_datatable[2])%>%
-      select(,-"Cumulative_number_for_14_days_of_COVID19_cases_per_100000")
+      select(,-"Geo_Id")
   })
   
   
@@ -57,6 +58,21 @@ function(input, output) {
       write.csv(selectedData2(), file, row.names = FALSE)
     }
   )
+  
+  # update region selections
+  observeEvent(input$Level, {
+    if (input$Level=="Global") {
+      updatePickerInput(session = session, inputId = "Country_regionplots", 
+                        choices = "Global", selected = "Global")
+      
+    }
+    
+    if (input$Level=="Country") {
+      updatePickerInput(session = session, inputId = "Country_regionplots", 
+                        choices = unique(df$Country),
+                        selected =  c("United_Kingdom","United_States_of_America","France" ,"Italy") )
+    }
+  }, ignoreInit = TRUE)
   
   }
  

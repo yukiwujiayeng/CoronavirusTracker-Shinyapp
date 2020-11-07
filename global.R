@@ -10,6 +10,7 @@ library(plotly)
 library(ggplot2)
 library(tidyverse)
 library(datasets)
+library(shinyWidgets)
 
 URL <-"https://opendata.ecdc.europa.eu/covid19/casedistribution/json"
 
@@ -23,14 +24,9 @@ df <- data.frame(Country= dta$records$countriesAndTerritories,
                  Cases  = dta$records$cases,
                  Deaths = dta$records$deaths,
                  Date   = dta$records$dateRep,
-                 year   = dta$records$year,
-                 Cumulative_number_for_14_days_of_COVID19_cases_per_100000 =dta$records$`Cumulative_number_for_14_days_of_COVID-19_cases_per_100000`,
                  Continent = dta$records$continentExp,
                  Geo_Id = dta$records$geoId )
 
-# convert factor to numeric 
-df$year <- as.numeric(as.character(df$year))
-df$Cumulative_number_for_14_days_of_COVID19_cases_per_100000<- as.numeric(as.character(df$Cumulative_number_for_14_days_of_COVID19_cases_per_100000))
 
 # convert factor to string
 df$Date <- as.character(df$Date)
@@ -40,6 +36,27 @@ df$Geo_Id <- as.character(df$Geo_Id)
 
 # convert to Date
 df$Date <- as_date(df$Date, format= "%d/%m/%Y" ) # convert to Date
+
+#Rearrange df group by country
+df<-df%>%
+  group_by(Country) %>%
+  
+  #calculate the cumulative confirmed cases in each country
+  mutate(cumulative_cases = rev(cumsum(rev(Cases)))) %>%
+  
+  ##calculate the cumulative confirmed cases in each country
+  mutate(Cumulative_deaths = rev(cumsum(rev(Deaths))))
+
+#Create Global data for Covid_19
+Global_data<-df %>%
+  
+  group_by(Date)%>%
+  
+  #calculate the cumulative confirmed cases in the whole world by date
+  mutate(cumulative_cases_by_date = rev(cumsum(rev(Cases)))) %>%
+
+  ##calculate the cumulative deaths cases the whole world by date
+  mutate(cumulative_deaths_by_date=rev(cumsum(rev(Deaths))))
 
 
 
