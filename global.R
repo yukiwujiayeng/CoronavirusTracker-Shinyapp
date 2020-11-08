@@ -4,7 +4,6 @@ library(jsonlite)
 library(shiny)
 library(shinythemes)
 library(shinydashboard)
-library(maps)
 library(lubridate)
 library(plotly)
 library(ggplot2)
@@ -42,21 +41,36 @@ df<-df%>%
   group_by(Country) %>%
   
   #calculate the cumulative confirmed cases in each country
-  mutate(cumulative_cases = rev(cumsum(rev(Cases)))) %>%
+  mutate(Cumulative_cases = rev(cumsum(rev(Cases)))) %>%
   
   ##calculate the cumulative confirmed cases in each country
   mutate(Cumulative_deaths = rev(cumsum(rev(Deaths))))
 
-#Create Global data for Covid_19
+
+#Create total Global  data by date for Covid_19
 Global_data<-df %>%
   
   group_by(Date)%>%
   
-  #calculate the cumulative confirmed cases in the whole world by date
-  mutate(cumulative_cases_by_date = rev(cumsum(rev(Cases)))) %>%
+  #calculate the total confirmed cases in the whole world by date
+  mutate(total_cases_by_date = rev(cumsum(rev(Cases)))) %>%
 
-  ##calculate the cumulative deaths cases the whole world by date
-  mutate(cumulative_deaths_by_date=rev(cumsum(rev(Deaths))))
+  ##calculate the total deaths cases the whole world by date
+  mutate(total_deaths_by_date = rev(cumsum(rev(Deaths))))%>%
+  
+  #extract each date data
+  distinct(Date,.keep_all = TRUE)%>%
+  
+  select(Date,total_cases_by_date,total_deaths_by_date )
+
+#global data with cumulative data of confirmed and seaths cases
+Global_data2 <- tibble(Date=Global_data$Date,
+             Cases=Global_data$total_cases_by_date,
+             Deaths=Global_data$total_deaths_by_date,
+             Cumulative_cases=rev(cumsum(rev(Cases))),
+             Cumulative_deaths=rev(cumsum(rev(Deaths))),
+             Country="Global")
+  
 
 
 

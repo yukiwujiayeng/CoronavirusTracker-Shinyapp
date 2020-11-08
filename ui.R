@@ -73,7 +73,7 @@ navbarPage("World Coronavirus Tracker",
                                         label = "Country",
                                         multiple = TRUE, 
                                         choices  = unique(df$Country),
-                                        selected = c("United_Kingdom","United_States_of_America","France" ,"Italy" )
+                                        selected = c("United_Kingdom","United_States_of_America","France" ,"Italy","India" )
                             ),
                             pickerInput("outcome_select", 
                                         label = "Data Type:",   
@@ -90,8 +90,8 @@ navbarPage("World Coronavirus Tracker",
                
                mainPanel(
                  tabsetPanel(
-                   tabPanel("Cumulative Data", plotlyOutput("country_plot_cumulative")),
-                   tabPanel("New Cases", plotlyOutput("country_plot"))
+                   tabPanel("Daily Cases", plotlyOutput("country_plot_new")),
+                   tabPanel("Cumulative Data", plotlyOutput("country_plot_cumulative"))
                  )
                )
              )
