@@ -146,12 +146,12 @@ function(input, output, session) {
     
     if (input$outcome_select == "Confirmed Cases") {
       a <- data.frame(Country = datasetInput_cumulative()$Country,
-                             type = datasetInput_cumulative()$Cumulative_cases,
+                             typenumber = datasetInput_cumulative()$Cumulative_cases,
                              Date=datasetInput_cumulative()$Date)
     }
     else {
       a <- data.frame(Country =datasetInput_cumulative()$Country,
-                             type = datasetInput_cumulative()$Cumulative_deaths,
+                             typenumber = datasetInput_cumulative()$Cumulative_deaths,
                              Date=datasetInput_cumulative()$Date)
     }
     return(a)
@@ -164,12 +164,12 @@ function(input, output, session) {
     
     if (input$outcome_select == "Confirmed Cases") {
       a <- data.frame(Country =datasetInput_cumulative()$Country,
-                      type = datasetInput_cumulative()$Cases,
+                      typenumber = datasetInput_cumulative()$Cases,
                       Date=datasetInput_cumulative()$Date)
     }
     else {
       a <- data.frame(Country =datasetInput_cumulative()$Country,
-                      type = datasetInput_cumulative()$Deaths,
+                      typenumber = datasetInput_cumulative()$Deaths,
                       Date=datasetInput_cumulative()$Date)
     }
     return(a)
@@ -177,7 +177,7 @@ function(input, output, session) {
   
   #cumulative line plot
   output$country_plot_cumulative <-renderPlotly({
-    p <-ggplot(newData2(), aes(x=Date,y=type,col=Country))+
+    p <-ggplot(newData2(), aes(x=Date,y=typenumber,col=Country))+
         geom_line()+
         labs(y=input$outcome_select)
     ggplotly(p)
@@ -185,7 +185,7 @@ function(input, output, session) {
   
   #Daily Cases line plot
   output$country_plot_new <-renderPlotly({
-    p <-ggplot(newData3(), aes(x=Date,y=type,col=Country))+
+    p <-ggplot(newData3(), aes(x=Date,y=typenumber,col=Country))+
       geom_line()+
       labs(y=input$outcome_select)
     ggplotly(p)

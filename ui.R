@@ -92,8 +92,13 @@ navbarPage("World Coronavirus Tracker",
                
                mainPanel(
                  tabsetPanel(
-                   tabPanel("Daily Cases", plotlyOutput("country_plot_new")),
-                   tabPanel("Cumulative Data", plotlyOutput("country_plot_cumulative"))
+                   navbarMenu("Daily Cases",
+                              tabPanel("Linear", plotlyOutput("country_plot_new")),
+                              tabPanel("Log" , plotlyOutput("country_plot_new_log"))),
+                   
+                   navbarMenu("Cumulative Data",
+                              tabPanel("Linear", plotlyOutput("country_plot_cumulative")),
+                              tabPanel("Log" , plotlyOutput("country_plot_cumulative_log")))
                  )
                )
              )
