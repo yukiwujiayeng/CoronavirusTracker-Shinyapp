@@ -1,9 +1,9 @@
 navbarPage("World Coronavirus Tracker",
            
            #Outbreak comparisons page
-           tabPanel("Outbreak comparisons",fluidPage(theme = shinytheme("flatly")),
+           tabPanel("Daily Outbreak",fluidPage(theme = shinytheme("flatly")),
                     pageWithSidebar(
-                      headerPanel('Outbreak comparisons'),
+                      headerPanel('Apply Filters'),
                       
                       sidebarPanel(width = 4,
                                    tags$h6("Reported cases are subject to significant variation in testing policy and capacity between countries."),
@@ -23,9 +23,10 @@ navbarPage("World Coronavirus Tracker",
                                      "date", 
                                      label    = "Date", 
                                      choices  = unique(df$Date)
-                                     ),   
+                                     )
                                    ),
-                      mainPanel( plotOutput("plot"))
+                      mainPanel(plotlyOutput("plot"),
+                                 )
                     )
            ),
            
@@ -57,7 +58,7 @@ navbarPage("World Coronavirus Tracker",
            
            #Region plot page
            tabPanel(
-             title = " Region plot",fluidPage(theme = shinytheme("flatly")),
+             title = "Outbreak comparisons",fluidPage(theme = shinytheme("flatly")),
              pageWithSidebar(
                headerPanel('Apply Filters'),
                sidebarPanel(width = 4,
@@ -85,6 +86,7 @@ navbarPage("World Coronavirus Tracker",
                               label    = "Date", 
                               start    = "2020-01-01"
                             ),
+                            
                             "Select Data types, Country, and plotting date range from filter menues to update plots."
                ),
                

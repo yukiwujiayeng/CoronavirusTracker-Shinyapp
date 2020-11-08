@@ -1,42 +1,69 @@
 function(input, output, session) {
+  
+  # Anything that calls autoInvalidate will automatically update every hour
+  timer <- reactiveTimer(3600000)
+  
   #Outbreak Comparison------
   selectedData <- reactive({
+    
+    #SelectData update everyhour
+    timer()
+    
+    #Add filter on the selected input
     df %>%
       filter(Country %in% input$Country,
         Date == input$date
         )
     })
   
-  
-  output$plot <- reactivePlot(
+  #function Filter type of data wanted for bar chart
+  newData <- reactive({
     
-    function() {
-      # check for the input variable
-      if (input$type == "Confirmed") {
-        
-        newData <- data.frame(Country = selectedData()$Country,
-                              Date = selectedData()$Date,
-                              type = selectedData()$Cases)
-      }
-      else {
-       
-        newData <- data.frame(Country = selectedData()$Country,
-                              Date = selectedData()$Date,
-                              type = selectedData()$Deaths)
-      }
+    timer()
+    if (input$type == "Confirmed") {
       
-    p <-ggplot(newData, aes(x=Country,y=type,fill=Country)) + 
+     u <- data.frame(Country = selectedData()$Country,
+                            Date = selectedData()$Date,
+                            type = selectedData()$Cases)
+    }
+    else {
+      
+      u <- data.frame(Country = selectedData()$Country,
+                            Date = selectedData()$Date,
+                            type = selectedData()$Deaths)
+    }
+    
+    return(u)
+    
+  })
+  
+  output$plot <- renderPlotly({
+    p <-ggplot(newData(), aes(x=Country,y=type,fill=Country)) + 
       geom_bar(stat = "identity") +
       coord_flip() + scale_y_continuous(name="Cases") +
       scale_x_discrete(name="Country")+
       labs(title=paste("Number of",input$type,"case on",input$date))
-    print(p)
+    ggplotly(p)
 
     })
+  
+  output$downloadimage <- downloadHandler(
+    filename = function(){
+      paste("daily_cases_bar_chart",'.png',sep='')
+      },
+    content = function(file){
+      ggsave(file,plot=output$plot)
+    }
+  )
+  
   
   #datatable Page-----
   #filter dataset for chosen country
   selectedData2 <- reactive({
+    
+    #update cselectedData2 every hour
+    timer()
+    
     df %>%
       filter(Country %in% input$Country_data) %>%
       filter(Date >= input$Date_datatable[1] & Date <= input$Date_datatable[2])%>%
@@ -59,6 +86,8 @@ function(input, output, session) {
     }
   )
   
+  
+  
   #Region Plot Page-----
   # update region selections
   observeEvent(input$Level, {
@@ -76,20 +105,31 @@ function(input, output, session) {
   }, ignoreInit = TRUE)
   
   #Create Country data set for region plot page with filter
-  country_plot_db <-reactive(
+  country_plot_db <-reactive({
+    
+    #update country_plot_db every hour
+    timer()
+    
     df%>%
       filter(Country %in% input$Country_regionplots) %>%
       filter(Date >= input$Date_regionplots[1] & Date <= input$Date_regionplots[2])
-  )
+  })
   
   #Create Global data set with date filter
-  Global_plot_db <-reactive(
+  Global_plot_db <-reactive({
+    
+    #update Global_plot_db every hour
+    timer()
+    
     as.data.frame(Global_data2)%>%
       filter(Date >= input$Date_regionplots[1] & Date <= input$Date_regionplots[2])
-  )
+  })
   
   #Function of switching dataset for different level
   datasetInput_cumulative <- reactive({
+    
+    timer()
+    
     if (input$Level == "Country"){
       dataset <- country_plot_db()
     }
@@ -101,6 +141,9 @@ function(input, output, session) {
   
   #function Filter type of data wanted for cumulative plot
   newData2 <- reactive({
+    
+    timer()
+    
     if (input$outcome_select == "Confirmed Cases") {
       a <- data.frame(Country = datasetInput_cumulative()$Country,
                              type = datasetInput_cumulative()$Cumulative_cases,
@@ -116,6 +159,9 @@ function(input, output, session) {
   
   ##function Filter type of data wanted for daily new cases plot
   newData3 <- reactive({
+    
+    timer()
+    
     if (input$outcome_select == "Confirmed Cases") {
       a <- data.frame(Country =datasetInput_cumulative()$Country,
                       type = datasetInput_cumulative()$Cases,
@@ -129,7 +175,7 @@ function(input, output, session) {
     return(a)
   })
   
-  
+  #cumulative line plot
   output$country_plot_cumulative <-renderPlotly({
     p <-ggplot(newData2(), aes(x=Date,y=type,col=Country))+
         geom_line()+
@@ -137,7 +183,7 @@ function(input, output, session) {
     ggplotly(p)
       })
   
-  
+  #Daily Cases line plot
   output$country_plot_new <-renderPlotly({
     p <-ggplot(newData3(), aes(x=Date,y=type,col=Country))+
       geom_line()+
