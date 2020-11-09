@@ -47,15 +47,6 @@ function(input, output, session) {
 
     })
   
-  output$downloadimage <- downloadHandler(
-    filename = function(){
-      paste("daily_cases_bar_chart",'.png',sep='')
-      },
-    content = function(file){
-      ggsave(file,plot=output$plot)
-    }
-  )
-  
   
   #datatable Page-----
   #filter dataset for chosen country
@@ -182,12 +173,35 @@ function(input, output, session) {
         labs(y=input$outcome_select)
     ggplotly(p)
       })
+  #Cumulative log plot
+  output$country_plot_cumulative_log <-renderPlotly({
+    p <-ggplot(newData2(), aes(x=Date,y=log10(typenumber),col=Country))+
+      geom_line()+
+      labs(y=input$outcome_select)
+    ggplotly(p)
+  })
   
   #Daily Cases line plot
   output$country_plot_new <-renderPlotly({
     p <-ggplot(newData3(), aes(x=Date,y=typenumber,col=Country))+
       geom_line()+
       labs(y=input$outcome_select)
+    ggplotly(p)
+  })
+ 
+ #Prevent the log plot get to negative infinite or NaNs so 
+  #change all cases number<=0 to 1 so that ln(1)=0
+ newData4<-reactive({
+   newData3() %>%
+     mutate(typenumber=replace(typenumber, typenumber<=0, 1)) %>%
+     as.data.frame()
+ })
+  #Daily Cases log plot
+  output$country_plot_new_log <-renderPlotly({
+    p <-ggplot(newData4(), aes(x=Date,y=log10(typenumber),col=Country))+
+      geom_line()+
+      labs(y=input$outcome_select)
+      
     ggplotly(p)
   })
   
