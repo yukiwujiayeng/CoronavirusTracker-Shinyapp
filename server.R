@@ -9,6 +9,9 @@ function(input, output, session) {
     #SelectData update everyhour
     timer()
     
+    #Observe if refresh button is pressed
+    input$refresh
+
     #Add filter on the selected input
     df %>%
       filter(Country %in% input$Country,
@@ -20,6 +23,8 @@ function(input, output, session) {
   newData <- reactive({
     
     timer()
+    input$refresh
+    
     if (input$type == "Confirmed") {
       
      u <- data.frame(Country = selectedData()$Country,
@@ -54,6 +59,7 @@ function(input, output, session) {
     
     #update cselectedData2 every hour
     timer()
+    input$refresh
     
     df %>%
       filter(Country %in% input$Country_data) %>%
@@ -100,7 +106,8 @@ function(input, output, session) {
     
     #update country_plot_db every hour
     timer()
-    
+    input$refresh
+
     df%>%
       filter(Country %in% input$Country_regionplots) %>%
       filter(Date >= input$Date_regionplots[1] & Date <= input$Date_regionplots[2])
@@ -111,7 +118,8 @@ function(input, output, session) {
     
     #update Global_plot_db every hour
     timer()
-    
+    input$refresh
+
     as.data.frame(Global_data2)%>%
       filter(Date >= input$Date_regionplots[1] & Date <= input$Date_regionplots[2])
   })
@@ -120,7 +128,8 @@ function(input, output, session) {
   datasetInput_cumulative <- reactive({
     
     timer()
-    
+    input$refresh
+
     if (input$Level == "Country"){
       dataset <- country_plot_db()
     }
@@ -134,6 +143,8 @@ function(input, output, session) {
   newData2 <- reactive({
     
     timer()
+    input$refresh
+
     
     if (input$outcome_select == "Confirmed Cases") {
       a <- data.frame(Country = datasetInput_cumulative()$Country,
@@ -152,6 +163,8 @@ function(input, output, session) {
   newData3 <- reactive({
     
     timer()
+    input$refresh
+
     
     if (input$outcome_select == "Confirmed Cases") {
       a <- data.frame(Country =datasetInput_cumulative()$Country,

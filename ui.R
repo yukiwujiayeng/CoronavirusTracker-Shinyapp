@@ -23,7 +23,8 @@ navbarPage("World Coronavirus Tracker",
                                      "date", 
                                      label    = "Date", 
                                      choices  = unique(df$Date)
-                                     )
+                                     ),
+                                   
                                    ),
                       mainPanel(plotlyOutput("plot"),
                                  )
@@ -49,7 +50,10 @@ navbarPage("World Coronavirus Tracker",
                             ),
                            
                             downloadButton("downloadData", "Download"),
-                            tags$h6("Download data in CSV file")
+                            tags$h6("Download data in CSV file"),
+                            
+                            actionButton(inputId = "refresh", label = "Refresh")
+                            
                           ),
                     
              mainPanel(DT::dataTableOutput('ex1'))
@@ -87,7 +91,9 @@ navbarPage("World Coronavirus Tracker",
                               start    = "2020-01-01"
                             ),
                             
-                            "Select Data types, Country, and plotting date range from filter menues to update plots."
+                            
+                            "Select Data types, Country, and plotting date range from filter menues to update plots.\n\n",
+                            
                ),
                
                mainPanel(
@@ -103,7 +109,6 @@ navbarPage("World Coronavirus Tracker",
                )
              )
            )
-           
            
            
            
