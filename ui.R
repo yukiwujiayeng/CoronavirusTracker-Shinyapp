@@ -6,7 +6,7 @@ navbarPage("World Coronavirus Tracker",
                       headerPanel('Apply Filters'),
                       
                       sidebarPanel(width = 4,
-                                   tags$h6("Reported cases are subject to significant variation in testing policy and capacity between countries."),
+                                   h6("Reported cases are subject to significant variation in testing policy and capacity between countries."),
                                    selectInput("Country", 
                                                label = "Country",
                                                multiple = TRUE, 
@@ -25,8 +25,15 @@ navbarPage("World Coronavirus Tracker",
                                      choices  = unique(df$Date)
                                      ),
                                    
+                                   actionButton(inputId = "refresh", 
+                                                label = "Refresh",
+                                                icon = icon("sync"))
+                                   
                                    ),
                       mainPanel(plotlyOutput("plot"),
+                                h5("Note:"),
+                                h5("If negative deaths or confirmed case number occurs in this plot, this is due the recorrection of the data or removal of cases detected from rapid tests of that country. ")
+                                
                                  )
                     )
            ),
@@ -50,13 +57,18 @@ navbarPage("World Coronavirus Tracker",
                             ),
                            
                             downloadButton("downloadData", "Download"),
-                            tags$h6("Download data in CSV file"),
+                            h6("Download data in CSV file"),
                             
-                            actionButton(inputId = "refresh", label = "Refresh")
-                            
+                            actionButton(inputId = "refresh", 
+                                         label = "Refresh",
+                                         icon = icon("sync")),
+                            h5("Note:"),
+                            h5("The negative value for deaths or confirmed case number on this data table is due the recorrection of the data or removal of cases detected from rapid tests of that country."),
+               
                           ),
                     
              mainPanel(DT::dataTableOutput('ex1'))
+                    
              )
            ),
            
@@ -91,8 +103,11 @@ navbarPage("World Coronavirus Tracker",
                               start    = "2020-01-01"
                             ),
                             
-                            
-                            "Select Data types, Country, and plotting date range from filter menues to update plots.\n\n",
+                            span(tags$i(h6("Select Data types, Country, and plotting date range from filter menues to update plots.\n\n")), style="color:#045a8d"),
+        
+                            actionButton(inputId = "refresh", 
+                                         label = "Refresh",
+                                         icon = icon("sync")),
                             
                ),
                
@@ -104,7 +119,11 @@ navbarPage("World Coronavirus Tracker",
                    
                    navbarMenu("Cumulative Data",
                               tabPanel("Linear", plotlyOutput("country_plot_cumulative")),
-                              tabPanel("Log" , plotlyOutput("country_plot_cumulative_log")))
+                              tabPanel("Log" , plotlyOutput("country_plot_cumulative_log"))),
+                   
+                   h5("Note:"),
+                   h5("The negative deaths or confirmed case number occurs in this plot, this is due the recorrection of the data or removal of cases detected from rapid tests of that country. ")
+                   
                  )
                )
              )

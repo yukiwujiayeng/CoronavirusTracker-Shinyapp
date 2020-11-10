@@ -4,12 +4,13 @@
 This site is updated once daily. 
 
 The data use in this shinny.app are come from the following resource:
+
 [European Centre for Disease Prevention and Control](https://opendata.ecdc.europa.eu/covid19/casedistribution/json)
 
 
 **NOTE:**
 
-The negative value for deaths or confirmed cases from the resource is due the recorrection of the data or removal of cases detected from rapid tests of that country. 
+The negative value for deaths or confirmed case number from the resource is due the recorrection of the data or removal of cases detected from rapid tests of that country. 
 
 
 This shinny.app provide several interactive features of the above resources in 3 different  tab Panel **Daily Outbreak**, **Data**, **Outbreak comparisons**.
