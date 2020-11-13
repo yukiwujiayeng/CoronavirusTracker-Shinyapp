@@ -1,9 +1,11 @@
 
 ##World Coronavirus Tracker
 
-This site is updated once daily. 
+The data is automatically refreshed every hour and can be updated when you click the refresh button on each panel.
 
-The data use in this shinny.app are come from the following resource:
+All the plots and data tables can be downloaded using the downloaded button or the camera icon above the plot (The camera icon will show up once you click the plot).
+
+The data use in this shinny.app is come from the following resource:
 
 [European Centre for Disease Prevention and Control](https://opendata.ecdc.europa.eu/covid19/casedistribution/json)
 
@@ -13,7 +15,7 @@ The data use in this shinny.app are come from the following resource:
 The negative value for deaths or confirmed case number from the resource is due the recorrection of the data or removal of cases detected from rapid tests of that country. 
 
 
-This shinny.app provide several interactive features of the above resources in 3 different  tab Panel **Daily Outbreak**, **Data**, **Outbreak comparisons**.
+This shinny.app provides several interactive features of the above resources in 3 different tab Panel **Daily Outbreak**, **Data**, **Outbreak comparisons**.
 
 1.**Daily Outbreak**
 
@@ -27,5 +29,10 @@ This tab panel provide the data table of the resource. You can filter the data t
 
 3.**Outbreak comparisons**
 
+This panel provided 4 different plots to see the global or selected countries situation.
+
+* Linear and log line plots of the number of daily outbreak cases over selected date range.
+
+* Linear and log line plots of cumulative cases over selected date range. 
 
 
