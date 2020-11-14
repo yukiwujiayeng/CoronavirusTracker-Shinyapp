@@ -243,17 +243,18 @@ function(input, output, session) {
    input$refresh03
    
    newData3() %>%
-     mutate(typenumber=replace(typenumber, typenumber<=0, 1)) %>%
+     mutate(typenumber=replace(typenumber, typenumber<=0, 1)) %>% #removing 0s so taking log doesn't throw errors log(1) = 0
+     mutate(typenumber = rollmean(x = typenumber, k = 3, align = "right", fill = NA)) %>% #calculating the 3 day rolling mean
+     mutate(typenumber = log10(typenumber)) %>% #taking log of rolled average
      as.data.frame()
  })
  
  
   #Daily Cases log plot
   output$country_plot_new_log <-renderPlotly({
-    p <-ggplot(newData4(), aes(x=Date,y=log10(typenumber),col=Country))+
+    p <-ggplot(newData4(), aes(x = Date, y = typenumber, col=Country))+
       geom_line()+
       labs(y=input$outcome_select)
-      
     ggplotly(p)
   })
   

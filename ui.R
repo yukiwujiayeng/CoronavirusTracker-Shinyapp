@@ -139,7 +139,7 @@ navbarPage("World Coronavirus Tracker",
                               
                               #2 drop down choices in this tab
                               tabPanel("Linear", plotlyOutput("country_plot_new")),
-                              tabPanel("Log" , plotlyOutput("country_plot_new_log"))),
+                              tabPanel("3 Day Rolling Log" , plotlyOutput("country_plot_new_log"))),
                    
                    navbarMenu("Cumulative Data",
                               

@@ -10,6 +10,7 @@ library(ggplot2)
 library(tidyverse)
 library(datasets)
 library(shinyWidgets)
+library(zoo)
 
 
 URL <-"https://opendata.ecdc.europa.eu/covid19/casedistribution/json"
