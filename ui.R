@@ -31,7 +31,7 @@ navbarPage("World Coronavirus Tracker",
                                      ),
                                    
                                    #refresh button
-                                   actionButton(inputId = "refresh01", 
+                                   actionButton(inputId = "refresh", 
                                                 label = "Refresh",
                                                 icon = icon("sync")),
                                    
@@ -79,7 +79,7 @@ navbarPage("World Coronavirus Tracker",
                             h5("The negative value for deaths or confirmed case number on this data table is due the recorrection of the data or removal of cases detected from rapid tests of that country."),
                
                           ),
-                    
+             #data table output       
              mainPanel(DT::dataTableOutput('ex1'))
                     
              )
@@ -136,10 +136,14 @@ navbarPage("World Coronavirus Tracker",
                mainPanel(
                  tabsetPanel(
                    navbarMenu("Daily Cases",
+                              
+                              #2 drop down choices in this tab
                               tabPanel("Linear", plotlyOutput("country_plot_new")),
                               tabPanel("Log" , plotlyOutput("country_plot_new_log"))),
                    
                    navbarMenu("Cumulative Data",
+                              
+                              #2 drop down choices in this tab
                               tabPanel("Linear", plotlyOutput("country_plot_cumulative")),
                               tabPanel("Log" , plotlyOutput("country_plot_cumulative_log"))),
                    

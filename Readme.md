@@ -1,38 +1,28 @@
+###App Details
 
-##World Coronavirus Tracker
+####**global.R**
 
-The data is automatically refreshed every hour and can be updated when you click the refresh button on each panel.
-
-All the plots and data tables can be downloaded using the downloaded button or the camera icon above the plot (The camera icon will show up once you click the plot).
-
-The data use in this shinny.app is come from the following resource:
-
-[European Centre for Disease Prevention and Control](https://opendata.ecdc.europa.eu/covid19/casedistribution/json)
+The **global.R** file loads all packages required for the app and access to COVID-19 Data Tracking API to extract the relevant bits of data into a data frame **df**, then create the data sets **Global_data2** and **Global_data**. These included data wrangling for each data frame , where **df** is a data frame group by country which includes each country cumulative cases and **Global_data2** is a tibble group by date and it includes cumulative cases as well. These 2 data sets are the data set we are going to use across the whole app.
 
 
-**NOTE:**
+####**ui.R**
 
-The negative value for deaths or confirmed case number from the resource is due the recorrection of the data or removal of cases detected from rapid tests of that country. 
+In the ui.R file we use `shinydashboard` and `shinythemes` packages to create an app with theme `flatly` and 3 different tab Panels: **Daily Outbreak**, **Data**, **Outbreak comparisons**. 
 
+The sidebar for each tab panel to the left contains option for user to select multiple countries (`pickerInput` function for **Outbreak comparisons** panel,`selectInput` function for the the other 2 panels), date (`selectInput` function, only appear in **Daily Outbreak** panel), date range (`dateRangeInput` function) and data level (`pickerInput` function, only appear in **Outbreak comparisons** panel) as well as Refresh button and download button
 
-This shinny.app provides several interactive features of the above resources in 3 different tab Panel **Daily Outbreak**, **Data**, **Outbreak comparisons**.
+Each panel give a different output in the main panel. We use `plotlyOutput` function for all the plotting output and use `DT::dataTableOutput()` function to give data table output. 
 
-1.**Daily Outbreak**
+####**server.R**
 
-In this tab panel, you can plot an interactive horizontal bar chart of the daily new confirmed or deaths cases of the countries you select in the **Country** filter. You can also choose an specific date and switching data type (Confirmed cases, Deaths cases) using the **Date** and **Type** filter.
+We split the **server.R** into 3 parts,each part represent the analysis and output needed for a different panel. (All the data set and plots create in the **server.R** make use of `reactive` function and `renderPlotly` function, respectively.)
 
-The bar chart enable you to see clearly which Country have the highest or lowest cases on the date chosen. And you can see the actual values of the number of cases just by moving your mouse on the chart and download the plot by clicking the camera icon above the plot.
+* The first part is to deal with the **Daily Outbreak** panel. The App first creates a data set called  selectedData with the country and date selected by the user, then use the selectedData to create another dataset (number of confirmed or deaths cases data) wanted by the user and plots a bar chart of this newData.
 
-2.**Data**
+* The second part is responsible for the **Data** panel. It creates a new data set called selectedData2 which filter the date range, data type (number of confirmed or deaths cases data) and countries chosen by the user to generate a data table in the output using `DT::renderDataTable` function.
 
-This tab panel provide the data table of the resource. You can filter the data table by clicking the sidebar filed **Country** and **Date**. The **Country** filed allows you to chose multiple country and the **Date** tab allows you to choose the date range you want. And the **Search** filed above the data table allows you to search the data you want directly. The data table will automatically load once you have select the filters. The data table can be downloaded as an CSV file using the download button.
+* The third part is to generate the output of the **Outbreak comparisons** panel. We make use of `observeEvent` function to update region level selections (i.e. Country or Global). With this function we can change the choice for the sidebar. (i.e. If the level 'Country' is selected,the **Country** filed in the sidebar will be giving choices with all the countries in the world. However, if 'Global' level is selected then the choice in the **Country** filed in the sidebar will be left with global only.)**datasetInput_cumulative** is a reative data set include function of switching dataset for different level.  Then similar to the first part, the App creates the date range, country, data type (number of confirmed or deaths cases data) wanted by the user from **datasetInput_cumulative** and creates linear line plots for daily cases and cumulative cases of newData3 and newData2, respectively. There are  negative and zero value for deaths or confirmed case number from the resource.In order to prevent the log plot get to negative infinite or NaNs, we create newData4 from newData3 using the `replace` function to change all cases number smaller or equal to 0 to 1 [ln(1)=0] to create log line plots of it. 
 
-3.**Outbreak comparisons**
-
-This panel provided 4 different plots to see the global or selected countries situation.
-
-* Linear and log line plots of the number of daily outbreak cases over selected date range.
-
-* Linear and log line plots of cumulative cases over selected date range. 
+ 
 
 

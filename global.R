@@ -11,6 +11,7 @@ library(tidyverse)
 library(datasets)
 library(shinyWidgets)
 
+
 URL <-"https://opendata.ecdc.europa.eu/covid19/casedistribution/json"
 
 # Send http request

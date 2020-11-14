@@ -11,7 +11,7 @@ function(input, output, session) {
     timer()
     
     #Observe if refresh button is pressed
-    input$refresh01
+    input$refresh
 
     #Add filter on the selected input
     df %>%
@@ -27,7 +27,7 @@ function(input, output, session) {
     timer()
     
     #Observe if refresh button is pressed
-    input$refresh01
+    input$refresh
     
     #function filter selected data type
     if (input$type == "Confirmed") {
@@ -74,8 +74,8 @@ function(input, output, session) {
     #filter the data selected by user
     df %>%
       filter(Country %in% input$Country_data) %>%
-      filter(Date >= input$Date_datatable[1] & Date <= input$Date_datatable[2])#%>%
-      #select(,-"Geo_Id")
+      filter(Date >= input$Date_datatable[1] & Date <= input$Date_datatable[2])%>%
+      select(,-"Geo_Id")
   })
   
   #output the data table
