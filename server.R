@@ -254,7 +254,8 @@ function(input, output, session) {
   output$country_plot_new_log <-renderPlotly({
     p <-ggplot(newData4(), aes(x = Date, y = typenumber, col=Country))+
       geom_line()+
-      labs(y=input$outcome_select)
+      labs(y=input$outcome_select) +
+      ylab("Rolling 3-day average of confirmed cases (log)")
     ggplotly(p)
   })
   
