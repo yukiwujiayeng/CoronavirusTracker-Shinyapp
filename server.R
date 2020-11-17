@@ -4,7 +4,7 @@ function(input, output, session) {
   timer <- reactiveTimer(3600000)
   
   
-  #--------------------------Outbreak Comparison Page------------------------------------
+  #--------------------------Daily Outbreak page------------------------------------
   selectedData <- reactive({
     
     #SelectData update everyhour
@@ -59,8 +59,7 @@ function(input, output, session) {
 
     })
   
-  
-  #--------------------------------------Datatable Page--------------------------------------
+  #-----------------------------Datatable Page--------------------------------------
   
   #filter dataset for chosen country
   selectedData2 <- reactive({
@@ -97,7 +96,7 @@ function(input, output, session) {
   
   
   
-  #--------------------------------------Region Plot Page--------------------------------------
+  #--------------------------------------Outbreak comparisons------------------------------------
   
   # # update region level selections
   observeEvent(c( input$Level,input$refresh03), {

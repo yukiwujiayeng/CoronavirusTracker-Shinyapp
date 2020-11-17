@@ -85,7 +85,7 @@ navbarPage("World Coronavirus Tracker",
              )
            ),
            
-           #--------------------------Region plot page----------------------------------------
+           #--------------------------Outbreak comparisons----------------------------------------
            
            tabPanel(
              title = "Outbreak comparisons",fluidPage(theme = shinytheme("flatly")),
