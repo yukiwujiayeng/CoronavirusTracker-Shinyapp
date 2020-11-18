@@ -11,6 +11,7 @@ library(tidyverse)
 library(datasets)
 library(shinyWidgets)
 library(zoo)
+library(shinycssloaders)
 
 
 URL <-"https://opendata.ecdc.europa.eu/covid19/casedistribution/json"

@@ -37,7 +37,7 @@ navbarPage("World Coronavirus Tracker",
                                    
                                    ),
                       
-                      mainPanel(plotlyOutput("plot"),
+                      mainPanel( withSpinner(plotlyOutput("plot")),
                                 h5("Note:"),
                                 h5("If negative deaths or confirmed case number occurs in this plot, this is due the recorrection of the data or removal of cases detected from rapid tests of that country. ")
                                 
@@ -133,19 +133,20 @@ navbarPage("World Coronavirus Tracker",
                             
                ),
                
+              
                mainPanel(
                  tabsetPanel(
                    navbarMenu("Daily Cases",
                               
                               #2 drop down choices in this tab
-                              tabPanel("Linear", plotlyOutput("country_plot_new")),
-                              tabPanel("3 Day Rolling Log" , plotlyOutput("country_plot_new_log"))),
+                              tabPanel("Linear", withSpinner(plotlyOutput("country_plot_new"))),
+                              tabPanel("3 Day Rolling Log" , withSpinner(plotlyOutput("country_plot_new_log")))),
                    
                    navbarMenu("Cumulative Data",
                               
                               #2 drop down choices in this tab
-                              tabPanel("Linear", plotlyOutput("country_plot_cumulative")),
-                              tabPanel("Log" , plotlyOutput("country_plot_cumulative_log"))),
+                              tabPanel("Linear", withSpinner(plotlyOutput("country_plot_cumulative"))),
+                              tabPanel("Log" , withSpinner(plotlyOutput("country_plot_cumulative_log")))),
                    
                    h5("Note:"),
                    h5("The negative deaths or confirmed case number occurs in this plot,is due the recorrection of the data or removal of cases detected from rapid tests of that country. ")
